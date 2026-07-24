@@ -1,0 +1,22 @@
+{
+  "name": "lektorat",
+  "owner": {
+    "name": "Robin Shannon",
+    "email": "rjs@robinshannon.net"
+  },
+  "metadata": {
+    "description": "lektorat - the human side of the doc<->LLM review GUI, plus the narrow skills invoked live from inside a lektorat review comment.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "lektorat",
+      "description": "Skills invoked live from inside a lektorat review comment (a slash command typed while composing, resolved synchronously via the Claude Agent SDK - see skills/README.md). Narrow, self-contained, text-in/text-out only - no filesystem/Bash access, no mode changes.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/example"
+      ]
+    }
+  ]
+}
