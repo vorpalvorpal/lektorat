@@ -1,5 +1,5 @@
 /**
- * Canonicalise markdown to the **exact** form the docloop GUI persists.
+ * Canonicalise markdown to the **exact** form the lektorat GUI persists.
  *
  * Both sides of the loop must emit byte-identical markdown or the git diff fills
  * with cosmetic noise (`<br>`→`<br />`, bullet/rule spacing, escaping, comment-

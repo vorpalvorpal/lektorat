@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createServer, type Server } from 'node:http';
 import { createApi, type ApiConfig } from '../src/api';
-import { canonicalize } from '../scripts/dl/canonical';
+import { canonicalize } from '../scripts/lk/canonical';
 
 // Fresh temp workspace + skillsDir per test, standalone http server on an
 // ephemeral port, driven with fetch — mirrors threads-store.test.ts's
@@ -16,8 +16,8 @@ let server: Server;
 let base: string;
 
 beforeEach(async () => {
-  workspace = await mkdtemp(join(tmpdir(), 'docloop-api-workspace-'));
-  skillsDir = await mkdtemp(join(tmpdir(), 'docloop-api-skills-'));
+  workspace = await mkdtemp(join(tmpdir(), 'lektorat-api-workspace-'));
+  skillsDir = await mkdtemp(join(tmpdir(), 'lektorat-api-skills-'));
   cfg = { workspace, docName: 'doc.md', skillsDir };
   server = createServer(createApi(cfg));
   await new Promise<void>((resolve) => server.listen(0, resolve));
@@ -223,7 +223,7 @@ describe('/threads', () => {
   });
 });
 
-describe('GET /docloop-skills', () => {
+describe('GET /lektorat-skills', () => {
   it('returns the skill roster from skillsDir', async () => {
     // Point cfg.skillsDir at a fixture with one real SKILL.md, mirroring the
     // repo's own skills/example/SKILL.md shape.
@@ -235,7 +235,7 @@ describe('GET /docloop-skills', () => {
       'utf8',
     );
 
-    const res = await fetch(`${base}/docloop-skills`);
+    const res = await fetch(`${base}/lektorat-skills`);
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.ok).toBe(true);
@@ -243,7 +243,7 @@ describe('GET /docloop-skills', () => {
   });
 
   it('returns an empty roster when skillsDir has no skills', async () => {
-    const res = await fetch(`${base}/docloop-skills`);
+    const res = await fetch(`${base}/lektorat-skills`);
     const body = await res.json();
     expect(body.skills).toEqual([]);
   });

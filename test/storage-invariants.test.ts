@@ -7,10 +7,10 @@ import { roundTrip } from '../src/roundtrip';
 const here = dirname(fileURLToPath(import.meta.url));
 const fixture = readFileSync(join(here, 'fixtures', 'roundtrip.md'), 'utf8');
 
-// NEW tests (not the M0 gate) — they ADD coverage for docloop-specific storage
+// NEW tests (not the M0 gate) — they ADD coverage for lektorat-specific storage
 // invariants discovered during M0. They must never replace the gate in
 // roundtrip.test.ts; they only pin extra guarantees the storage scheme relies on.
-describe('docloop storage invariants (supplementary to the M0 gate)', () => {
+describe('lektorat storage invariants (supplementary to the M0 gate)', () => {
   it('keeps a thematic break as a literal `---` (not `***`)', async () => {
     // src/roundtrip.ts pins `rule: '-'`; remark-stringify defaults to `***`.
     // Guard against that pin regressing.

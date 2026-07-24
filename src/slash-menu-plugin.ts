@@ -1,5 +1,5 @@
 /**
- * A "/" trigger dropdown for docloop skill commands, in the compose box (see
+ * A "/" trigger dropdown for lektorat skill commands, in the compose box (see
  * main.ts mountCompose). Built directly on `@milkdown/plugin-slash`'s
  * `SlashProvider` — a standalone class handling trigger detection and
  * floating-ui positioning — rather than the package's `slashFactory`/ctx
@@ -16,7 +16,7 @@ import type { EditorView } from '@milkdown/prose/view';
 import { SlashProvider } from '@milkdown/plugin-slash';
 import type { SkillMeta } from './skills-client';
 
-export const slashMenuPluginKey = new PluginKey('docloop-slash-menu');
+export const slashMenuPluginKey = new PluginKey('lektorat-slash-menu');
 
 /** Matches a slash command still being typed, right at the cursor: `/`, `/e`, `/example`, … */
 const TRIGGER_RE = /(?:^|\s)\/(\w*)$/;

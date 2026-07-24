@@ -1,5 +1,5 @@
 /**
- * CLI: canonicalise markdown file(s) in place to the docloop GUI's persisted form.
+ * CLI: canonicalise markdown file(s) in place to the lektorat GUI's persisted form.
  *
  * The normalisation step for the LLM→md side of the loop. In v0 the MCP is hand-
  * simulated, so a Claude turn ends by editing `workspace/doc.md`, running this,

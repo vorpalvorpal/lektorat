@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { TextSelection } from '@milkdown/prose/state';
-import { createEditor, type DocloopEditor } from '../src/editor';
+import { createEditor, type LektoratEditor } from '../src/editor';
 import {
   applyAnchor,
   removeAnchor,
@@ -17,14 +17,14 @@ import { OLD_MD, NEW_MD } from '../src/sample';
 // live in the sidecar store (covered by threads-store.test.ts); these tests cover
 // the anchor + hunk operations on the document itself.
 
-let ed: DocloopEditor | null = null;
+let ed: LektoratEditor | null = null;
 afterEach(async () => {
   await ed?.destroy();
   ed = null;
 });
 
 /** Select the doc text matching `needle` (first occurrence) in the live doc. */
-function selectText(d: DocloopEditor, needle: string): void {
+function selectText(d: LektoratEditor, needle: string): void {
   const doc = d.view.state.doc;
   let found = -1;
   doc.descendants((n, pos) => {

@@ -1,5 +1,5 @@
 /**
- * docloop read/write view entry point.
+ * lektorat read/write view entry point.
  *
  * The editor's ProseMirror doc is the source of truth for the *document* (prose +
  * `:mark` anchors); comment **bodies** live in the sidecar `/threads` store. This
@@ -28,7 +28,7 @@
  * in-memory fallback so the bundled demo still works with no dev server.
  */
 import { DecorationSet } from '@milkdown/prose/view';
-import { createEditor, type DocloopEditor } from './editor';
+import { createEditor, type LektoratEditor } from './editor';
 import { buildReadViewDecorations } from './decorations';
 import { decorationPlugin, decoPluginKey } from './deco-plugin';
 import { extractAnchors, nextThreadId, threadNumber, type Anchor } from './threads';
@@ -60,7 +60,7 @@ import { renderDocList, renderNodeTree } from './nav';
 
 /** Mutable app state: the editor, the diff baseline, and the cached store. */
 interface App {
-  ed: DocloopEditor;
+  ed: LektoratEditor;
   /**
    * The doc the editor is currently reviewing (from the initial `/doc`
    * response's `name`, then updated by {@link switchDoc}). Reload, Commit and
@@ -75,7 +75,7 @@ interface App {
   /** whether the `/threads` endpoint is live (else mutate `threads` in-memory) */
   usingStore: boolean;
   /** read-only Milkdown instances rendering comment bodies, torn down each render */
-  commentEditors: DocloopEditor[];
+  commentEditors: LektoratEditor[];
   /** UTC ISO of the previous turn's commit, or null — bounds "new this turn" */
   baselineIso: string | null;
   /** thread ids currently expanded; the rest are collapsed in the sidebar */
@@ -97,7 +97,7 @@ interface App {
    */
   composeThreadId: string | null;
   /** The live editable compose instance for `composeThreadId`, if any — torn down on every rerender (see renderNow), tracked separately from the read-only `commentEditors`. */
-  composeEditor: DocloopEditor | null;
+  composeEditor: LektoratEditor | null;
   /**
    * Thread id → comment seq that's still amendable *this browser session*.
    * Blurring the compose box with content amends this seq in place (rather
@@ -108,7 +108,7 @@ interface App {
    * just "no draft yet").
    */
   draftSeq: Map<string, number>;
-  /** The docloop plugin's skill roster, fetched once at startup — the slash-trigger dropdown's source list. */
+  /** The lektorat plugin's skill roster, fetched once at startup — the slash-trigger dropdown's source list. */
   skillCommands: SkillMeta[];
   /**
    * Client-side unsaved-edit safety net (see draft-store.ts). `name` keys the
@@ -338,7 +338,7 @@ async function main(): Promise<void> {
 
   // Clicking an in-text badge jumps to its thread and opens the reply box.
   ed.view.dom.addEventListener('click', (e) => {
-    const badge = (e.target as HTMLElement).closest?.('.docloop-badge');
+    const badge = (e.target as HTMLElement).closest?.('.lektorat-badge');
     const id = badge?.getAttribute('data-thread');
     if (id) {
       e.preventDefault();
@@ -566,7 +566,7 @@ const SLASH_COMMAND_RE = /^\/(\S+)\s+([\s\S]*)$/;
  * appear with no visible progress. Worth revisiting if it proves confusing
  * in practice; out of scope for proving the invocation mechanism itself.
  */
-async function resolveComposeBody(app: App, ed: DocloopEditor): Promise<string> {
+async function resolveComposeBody(app: App, ed: LektoratEditor): Promise<string> {
   const body = currentMarkdown(ed);
   const match = SLASH_COMMAND_RE.exec(body);
   if (!match) return body;
@@ -823,8 +823,8 @@ function layoutGutter(app: App): void {
     if (card.dataset.thread) {
       const id = card.dataset.thread;
       const el =
-        editorDom.querySelector<HTMLElement>(`.docloop-mark[data-thread="${id}"]`) ??
-        editorDom.querySelector<HTMLElement>(`.docloop-badge[data-thread="${id}"]`);
+        editorDom.querySelector<HTMLElement>(`.lektorat-mark[data-thread="${id}"]`) ??
+        editorDom.querySelector<HTMLElement>(`.lektorat-badge[data-thread="${id}"]`);
       return el ? el.getBoundingClientRect().top - originTop : Number.POSITIVE_INFINITY;
     }
     // change card: locate by its live-doc PM position.
@@ -894,7 +894,7 @@ async function focusThread(app: App, id: string): Promise<void> {
  * Render one comment body as a read-only Milkdown instance inside `host`.
  *
  * Isolated in its own try/catch: `createEditor` parses arbitrary markdown a
- * human (or LLM) typed, so it can throw on content docloop's schema doesn't
+ * human (or LLM) typed, so it can throw on content lektorat's schema doesn't
  * expect (e.g. an unhandled remark-directive edge case — see
  * src/directive-gate.ts for the one this was written for). One bad comment
  * failing to render must not blank the rest of the sidebar — renderThreads

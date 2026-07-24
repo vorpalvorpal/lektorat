@@ -89,13 +89,13 @@ describe('loadDraft staleness + emptiness guards', () => {
 
   it('returns null on a malformed / non-JSON stored value', () => {
     const s = fakeStorage();
-    s.setItem('docloop:draft:plan.md', 'not json{');
+    s.setItem('lektorat:draft:plan.md', 'not json{');
     expect(loadDraft(s, DOC, 'base')).toBeNull();
   });
 
   it('returns null on a JSON value missing required fields', () => {
     const s = fakeStorage();
-    s.setItem('docloop:draft:plan.md', JSON.stringify({ draft: 'x' })); // no base
+    s.setItem('lektorat:draft:plan.md', JSON.stringify({ draft: 'x' })); // no base
     expect(loadDraft(s, DOC, 'base')).toBeNull();
   });
 });

@@ -1,7 +1,7 @@
 /**
- * Read the `docloop` plugin's own skill roster off disk — each skill under
- * `docloop/skills/<id>/SKILL.md` — for two different consumers: `GET
- * /docloop-skills` (name + description, for
+ * Read the `lektorat` plugin's own skill roster off disk — each skill under
+ * `lektorat/skills/<id>/SKILL.md` — for two different consumers: `GET
+ * /lektorat-skills` (name + description, for
  * the slash-trigger dropdown) and `POST /run-skill` (the body, as the system
  * prompt for a live invocation). Real YAML, not the hand-rolled line parser
  * `threads-store.ts` uses for comment frontmatter — SKILL.md's `description`

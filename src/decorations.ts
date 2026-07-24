@@ -53,7 +53,7 @@ export function buildBodyTextIndex(doc: PMNode): BodyTextIndex {
 function makeDeleteWidget(removed: string): (view: unknown, getPos: unknown) => HTMLElement {
   return () => {
     const span = document.createElement('del');
-    span.className = 'docloop-del';
+    span.className = 'lektorat-del';
     span.textContent = removed;
     return span;
   };
@@ -63,7 +63,7 @@ function makeDeleteWidget(removed: string): (view: unknown, getPos: unknown) => 
  * Build the diff decoration set for the editor doc (which holds `newMd`),
  * relative to `oldMd`.
  *
- * - inserted words  → inline decoration (class `docloop-ins`, rendered green)
+ * - inserted words  → inline decoration (class `lektorat-ins`, rendered green)
  *   spanning the inserted text in the doc.
  * - deleted words   → widget decoration (a red <del>) at the point in the doc
  *   where the text was removed.
@@ -108,7 +108,7 @@ export function diffDecorationList(
       const to = newIdx.posAt(cursor + seg.value.length);
       if (!accepted(from)) {
         decos.push(
-          Decoration.inline(from, to, { class: 'docloop-ins' }, { key: `ins-${cursor}` }),
+          Decoration.inline(from, to, { class: 'lektorat-ins' }, { key: `ins-${cursor}` }),
         );
       }
       cursor += seg.value.length;
@@ -201,7 +201,7 @@ export function markDecorationList(doc: PMNode): Decoration[] {
   // ProseMirror renders one wrapper per text run — fine for the background.
   for (const h of highlights) {
     decos.push(
-      Decoration.inline(h.from, h.to, { class: 'docloop-mark', 'data-thread': h.id }),
+      Decoration.inline(h.from, h.to, { class: 'lektorat-mark', 'data-thread': h.id }),
     );
   }
 
@@ -221,7 +221,7 @@ export function markDecorationList(doc: PMNode): Decoration[] {
 /** The little numbered pill that marks where a comment anchor ends. */
 function makeBadge(id: string): HTMLElement {
   const el = document.createElement('span');
-  el.className = 'docloop-badge';
+  el.className = 'lektorat-badge';
   el.textContent = threadNumber(id);
   el.setAttribute('data-thread', id);
   el.setAttribute('role', 'button');

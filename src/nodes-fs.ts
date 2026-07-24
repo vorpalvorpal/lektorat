@@ -1,6 +1,6 @@
 /**
  * Node-store directory walker — the pure-fs half of the `GET /nodes` seam
- * (plan dl-E-gui-nav-sidebar). The ctx node store's schema is still a draft,
+ * (plan lk-E-gui-nav-sidebar). The ctx node store's schema is still a draft,
  * so v1 is deliberately schema-agnostic: one entry per directory, title =
  * basename, state = 'unknown' (reserved for the settled schema), `*.md`
  * filenames listed per directory. Pure fs, no git.

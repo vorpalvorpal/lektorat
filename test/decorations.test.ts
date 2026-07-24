@@ -7,13 +7,13 @@ import {
   findMarkHighlights,
 } from '../src/decorations';
 import { decorationPlugin, decoPluginKey } from '../src/deco-plugin';
-import { createEditor, type DocloopEditor } from '../src/editor';
+import { createEditor, type LektoratEditor } from '../src/editor';
 import { OLD_MD, NEW_MD } from '../src/sample';
 
 // jsdom integration test (M1): a real headless Milkdown editor holds NEW_MD; we
 // diff it against OLD_MD and assert the decoration set the read view will draw.
 
-let ed: DocloopEditor | null = null;
+let ed: LektoratEditor | null = null;
 afterEach(async () => {
   await ed?.destroy();
   ed = null;
@@ -83,9 +83,9 @@ describe('diff decorations (integration)', () => {
 
     // ...and ProseMirror rendered those decorations into the DOM, read-only.
     const html = ed.view.dom.innerHTML;
-    expect(html).toContain('docloop-ins'); // green insert span
-    expect(html).toContain('docloop-del'); // red strikethrough delete widget
-    expect(html).toContain('docloop-mark'); // comment-anchor highlight
+    expect(html).toContain('lektorat-ins'); // green insert span
+    expect(html).toContain('lektorat-del'); // red strikethrough delete widget
+    expect(html).toContain('lektorat-mark'); // comment-anchor highlight
     expect(ed.view.dom.getAttribute('contenteditable')).toBe('false');
   });
 });

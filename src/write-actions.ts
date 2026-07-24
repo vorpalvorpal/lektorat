@@ -17,7 +17,7 @@ import { editorViewCtx } from '@milkdown/core';
 import { getMarkdown, replaceAll } from '@milkdown/utils';
 import type { EditorState } from '@milkdown/prose/state';
 import type { Node as PMNode } from '@milkdown/prose/model';
-import type { DocloopEditor } from './editor';
+import type { LektoratEditor } from './editor';
 import { commentAnchorMark, commentBlockNode } from './anchor';
 import { unwrapAnchor } from './threads';
 
@@ -33,7 +33,7 @@ import { unwrapAnchor } from './threads';
  * single continuous `commentAnchor`/`mark` PM mark serializes as two (or more)
  * `:mark[...]{#id}` fragments with only whitespace between them, even though
  * nothing is wrong with the document (confirmed via `doc.toJSON()` during
- * development of package D — see the plan-change note in dl-D). Re-parsing the
+ * development of package D — see the plan-change note in lk-D). Re-parsing the
  * fragmented text reproduces the identical PM mark structure, so this isn't
  * fixable by reloading; it has to be repaired in the serialized string every
  * time. Since it only fires for same-id `:mark[...]` runs separated by pure
@@ -54,12 +54,12 @@ function coalesceMarkFragments(md: string): string {
 }
 
 /** Read the current editor doc as markdown (the M0 serialiser). */
-export function currentMarkdown(ed: DocloopEditor): string {
+export function currentMarkdown(ed: LektoratEditor): string {
   return coalesceMarkFragments(ed.editor.action(getMarkdown()));
 }
 
 /** Reload the editor from markdown (re-parses through the M0 path). */
-export function loadMarkdown(ed: DocloopEditor, markdown: string): void {
+export function loadMarkdown(ed: LektoratEditor, markdown: string): void {
   ed.editor.action(replaceAll(markdown));
 }
 
@@ -67,7 +67,7 @@ export function loadMarkdown(ed: DocloopEditor, markdown: string): void {
  * Is there a non-empty text selection to anchor a comment on? (You cannot
  * comment on a collapsed cursor — there'd be no span to wrap.)
  */
-export function hasTextSelection(ed: DocloopEditor): boolean {
+export function hasTextSelection(ed: LektoratEditor): boolean {
   const { from, to } = ed.view.state.selection;
   return to > from;
 }
@@ -77,7 +77,7 @@ export function hasTextSelection(ed: DocloopEditor): boolean {
  * auto-creates a new thread (see main.ts), and this guards against wrapping a
  * second anchor over text that's already commented.
  */
-export function selectionOverlapsAnchor(ed: DocloopEditor): boolean {
+export function selectionOverlapsAnchor(ed: LektoratEditor): boolean {
   const { from, to } = ed.view.state.selection;
   const markType = commentAnchorMark.type(ed.editor.ctx);
   return ed.view.state.doc.rangeHasMark(from, to, markType);
@@ -90,7 +90,7 @@ export function selectionOverlapsAnchor(ed: DocloopEditor): boolean {
  * treated as "nothing written" (abandon / just deactivate) or "has content"
  * (save it).
  */
-export function isDocEmpty(ed: DocloopEditor): boolean {
+export function isDocEmpty(ed: LektoratEditor): boolean {
   return ed.view.state.doc.textContent.trim() === '';
 }
 
@@ -178,7 +178,7 @@ function withinOneTopBlock(doc: PMNode, from: number, to: number): boolean {
  * exactly once, rolling back and throwing rather than persisting a fragmented
  * anchor.
  */
-export function applyAnchor(ed: DocloopEditor, id: string): boolean {
+export function applyAnchor(ed: LektoratEditor, id: string): boolean {
   if (!hasTextSelection(ed)) return false;
   const ctx = ed.editor.ctx;
   const markType = commentAnchorMark.type(ctx);
@@ -225,6 +225,6 @@ export function applyAnchor(ed: DocloopEditor, id: string): boolean {
  * reload. (Deleting the store directory is the caller's job — see
  * threads-client.ts `resolveThread`.)
  */
-export function removeAnchor(ed: DocloopEditor, id: string): void {
+export function removeAnchor(ed: LektoratEditor, id: string): void {
   loadMarkdown(ed, unwrapAnchor(currentMarkdown(ed), id));
 }

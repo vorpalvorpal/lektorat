@@ -1,8 +1,8 @@
-# docloop skills
+# lektorat skills
 
-Skills registered under the `docloop` plugin are invoked **live**, synchronously,
-while a human is composing a comment in the docloop GUI (typing `/skill-name
-context…`, via the slash-trigger dropdown) — see `docloop/vite.config.ts`'s
+Skills registered under the `lektorat` plugin are invoked **live**, synchronously,
+while a human is composing a comment in the lektorat GUI (typing `/skill-name
+context…`, via the slash-trigger dropdown) — see `lektorat/vite.config.ts`'s
 `POST /run-skill`. It reads the skill's own `SKILL.md` body straight off the
 working tree (frontmatter stripped) and uses it as the Claude Agent SDK's
 `systemPrompt` for a single-turn `query()` call with `tools: []` and
@@ -27,7 +27,7 @@ Because of that, every skill here must be:
   brackets needed) as an attempted directive *anywhere* it appears, crashing
   the comment's re-render if `name` isn't a recognised one. Concretely: **never
   emit a colon directly between two word characters** (`word:word` — no
-  space) in a skill's output; `docloop:example` broke this, `docloop-example`
+  space) in a skill's output; `lektorat:example` broke this, `lektorat-example`
   didn't. This isn't unique to skill output — any human-typed comment with
   the same pattern hits the identical crash — but a skill's output is
   templated, so it's cheap to get right once and forget about.
@@ -39,6 +39,6 @@ bundled-Claude-Code skill (`/code-review`, `/simplify`, etc.) here — those
 assume an interactive agent with full tool access and won't behave sensibly
 invoked this way; write a narrow, purpose-built skill instead.
 
-`example/` is a placeholder proving the scan (`GET /docloop-skills`) and
+`example/` is a placeholder proving the scan (`GET /lektorat-skills`) and
 invocation (`POST /run-skill`) mechanism end to end — not a real skill.
 Designing the actual roster is a separate, later decision.

@@ -21,7 +21,7 @@ import { configureStringify } from './editor-preset';
 import { directivePlugins } from './anchor';
 import { roundTrip } from './roundtrip';
 
-export interface DocloopEditor {
+export interface LektoratEditor {
   editor: Editor;
   view: EditorView;
   /** Parse a markdown string into a doc using the editor's own parser. */
@@ -43,7 +43,7 @@ export async function createEditor(
   root: HTMLElement,
   markdown: string,
   opts: { editable?: boolean; plugins?: MilkdownPlugin[] } = {},
-): Promise<DocloopEditor> {
+): Promise<LektoratEditor> {
   const canonical = await roundTrip(markdown);
 
   let make = Editor.make()

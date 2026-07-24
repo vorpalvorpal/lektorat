@@ -1,6 +1,6 @@
 /**
  * CLI: deterministic anchor/comment operations for Claude's turn, run from
- * `docloop/` against `workspace/doc.md` + `workspace/threads/`:
+ * `lektorat/` against `workspace/doc.md` + `workspace/threads/`:
  *
  *     npm run thread -- new "<exact span>"     # allocates id, anchors, 1st comment (stdin = body)
  *     npm run thread -- reply <id>             # append a comment (stdin = body)
@@ -49,7 +49,7 @@ for (let i = 0; i < rest.length; i++) {
 }
 
 const workspace = join(process.cwd(), 'workspace');
-const docName = process.env.DOCLOOP_DOC ?? 'doc.md';
+const docName = process.env.LEKTORAT_DOC ?? 'doc.md';
 const paths: ThreadPaths = { docPath: join(workspace, docName), threadsDir: join(workspace, 'threads') };
 
 if (!subcommand) usage();

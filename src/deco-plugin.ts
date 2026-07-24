@@ -9,7 +9,7 @@ import { $prose } from '@milkdown/utils';
 import { Plugin, PluginKey } from '@milkdown/prose/state';
 import { DecorationSet } from '@milkdown/prose/view';
 
-export const decoPluginKey = new PluginKey<DecorationSet>('docloop-decorations');
+export const decoPluginKey = new PluginKey<DecorationSet>('lektorat-decorations');
 
 /** Build the plugin. `initial` is the decoration set for the loaded doc. */
 export const decorationPlugin = (initial: DecorationSet) =>

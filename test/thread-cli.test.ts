@@ -7,14 +7,14 @@ import { listThreads, addComment } from '../src/threads-store';
 import { extractAnchors } from '../src/threads';
 
 // Exercises the deterministic anchor/comment tool (scripts/thread-actions.ts)
-// against a scratch workspace, mirroring the shape of the real docloop/workspace/
+// against a scratch workspace, mirroring the shape of the real lektorat/workspace/
 // directory (doc.md + threads/), but isolated per test.
 
 let dir: string;
 let paths: ThreadPaths;
 
 beforeEach(async () => {
-  dir = await mkdtemp(join(tmpdir(), 'docloop-thread-cli-'));
+  dir = await mkdtemp(join(tmpdir(), 'lektorat-thread-cli-'));
   paths = { docPath: join(dir, 'doc.md'), threadsDir: join(dir, 'threads') };
 });
 

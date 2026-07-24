@@ -18,13 +18,13 @@ import remarkDirective from 'remark-directive';
 import remarkStringify from 'remark-stringify';
 import { getMarkdown } from '@milkdown/utils';
 import { createDirectiveNameGate } from '../src/directive-gate';
-import { createEditor, type DocloopEditor } from '../src/editor';
+import { createEditor, type LektoratEditor } from '../src/editor';
 
 describe('remark-directive: bare `:word` is parsed as a directive attempt', () => {
   const proc = unified().use(remarkParse).use(remarkDirective);
 
   it.each([
-    ['docloop:example echo hello', 'example'],
+    ['lektorat:example echo hello', 'example'],
     ['note:check this', 'check'],
     ['type:string', 'string'],
     ['10:30am test', '30am'],
@@ -89,14 +89,14 @@ describe('createDirectiveNameGate: demotes unknown directives to literal text', 
 });
 
 describe('createEditor: a comment body with a stray `:word` no longer crashes the read view', () => {
-  let ed: DocloopEditor | null = null;
+  let ed: LektoratEditor | null = null;
   afterEach(async () => {
     await ed?.destroy();
     ed = null;
   });
 
   it.each([
-    'docloop:example echo hello',
+    'lektorat:example echo hello',
     'note:check this',
     'type:string',
     '10:30am test',
@@ -107,7 +107,7 @@ describe('createEditor: a comment body with a stray `:word` no longer crashes th
     expect(text.replace(/\s+/g, ' ')).toContain(body.split(' ')[0]);
   });
 
-  it.each(['10:30am test', 'note:check this', 'docloop:example echo hello', 'a:b c:d e:f'])(
+  it.each(['10:30am test', 'note:check this', 'lektorat:example echo hello', 'a:b c:d e:f'])(
     'load -> save -> reload -> save is a stable fixpoint for %s',
     async (md) => {
       const first = await createEditor(document.createElement('div'), md, { editable: false });

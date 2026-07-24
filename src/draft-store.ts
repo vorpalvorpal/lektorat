@@ -34,7 +34,7 @@ interface StoredDraft {
   savedAt: string;
 }
 
-const PREFIX = 'docloop:draft:';
+const PREFIX = 'lektorat:draft:';
 const keyFor = (docName: string): string => `${PREFIX}${docName}`;
 
 /**

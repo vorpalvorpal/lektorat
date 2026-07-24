@@ -69,7 +69,7 @@ const commentAnchorSchema = $markSchema(COMMENT_ANCHOR, () => ({
   ],
   toDOM: (mark) => [
     'mark',
-    { 'data-thread': mark.attrs.threadId as string, class: 'docloop-mark' },
+    { 'data-thread': mark.attrs.threadId as string, class: 'lektorat-mark' },
     0,
   ],
   parseMarkdown: {
@@ -110,7 +110,7 @@ const commentBlockSchema = $nodeSchema(COMMENT_BLOCK, () => ({
   ],
   toDOM: (node) => [
     'div',
-    { 'data-thread': node.attrs.threadId as string, class: 'docloop-block' },
+    { 'data-thread': node.attrs.threadId as string, class: 'lektorat-block' },
     0,
   ],
   parseMarkdown: {

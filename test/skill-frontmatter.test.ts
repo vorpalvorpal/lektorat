@@ -7,7 +7,7 @@ import { readSkillMeta, readSkillBody, listSkills } from '../src/skill-frontmatt
 let base: string;
 
 beforeEach(async () => {
-  base = await mkdtemp(join(tmpdir(), 'docloop-skills-'));
+  base = await mkdtemp(join(tmpdir(), 'lektorat-skills-'));
 });
 
 afterEach(async () => {
@@ -33,7 +33,7 @@ describe('readSkillMeta', () => {
         '---',
         'name: example',
         'description: >',
-        '  Placeholder skill proving the docloop plugin discovery mechanism',
+        '  Placeholder skill proving the lektorat plugin discovery mechanism',
         '  end to end. Not a real skill.',
         '---',
         '# Body',
@@ -43,7 +43,7 @@ describe('readSkillMeta', () => {
     const meta = await readSkillMeta(base, 'example');
     expect(meta.name).toBe('example');
     expect(meta.description).toBe(
-      'Placeholder skill proving the docloop plugin discovery mechanism end to end. Not a real skill.',
+      'Placeholder skill proving the lektorat plugin discovery mechanism end to end. Not a real skill.',
     );
   });
 

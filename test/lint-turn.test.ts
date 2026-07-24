@@ -9,7 +9,7 @@ let dir: string;
 let paths: LintPaths;
 
 beforeEach(async () => {
-  dir = await mkdtemp(join(tmpdir(), 'docloop-lint-turn-'));
+  dir = await mkdtemp(join(tmpdir(), 'lektorat-lint-turn-'));
   paths = { docPath: join(dir, 'doc.md'), threadsDir: join(dir, 'threads') };
 });
 

@@ -8,13 +8,13 @@ import { renderTurn } from './turn';
 import { listThreads, addComment, updateComment, resolveThread, newThreadId } from './threads-store';
 import { listSkills, readSkillBody } from './skill-frontmatter';
 import { readNodeTree } from './nodes-fs';
-import { canonicalize } from '../scripts/dl/canonical';
-import { isDocPath, isDocDir } from '../scripts/dl/docs';
+import { canonicalize } from '../scripts/lk/canonical';
+import { isDocPath, isDocDir } from '../scripts/lk/docs';
 
 const run = promisify(execFile);
 
 /**
- * Invoke one docloop skill live: its own SKILL.md body (frontmatter
+ * Invoke one lektorat skill live: its own SKILL.md body (frontmatter
  * stripped) as the system prompt, `context` as the single user turn, no
  * tool access, no interactive approval — an unattended invocation can only
  * ever produce a final text response. Throws if the run errors or is denied
@@ -42,12 +42,12 @@ async function runSkill(systemPrompt: string, context: string): Promise<string> 
 export interface ApiConfig {
   /** The workspace directory: its own git repo holding the tracked doc + threads sidecar. */
   workspace: string;
-  /** The tracked doc under review, e.g. `doc.md` (see DOCLOOP_DOC). */
+  /** The tracked doc under review, e.g. `doc.md` (see LEKTORAT_DOC). */
   docName: string;
-  /** The docloop plugin's own skills directory (see skills/README.md). */
+  /** The lektorat plugin's own skills directory (see skills/README.md). */
   skillsDir: string;
   /**
-   * The ctx node store's root directory (see DOCLOOP_NODES / GET /nodes) —
+   * The ctx node store's root directory (see LEKTORAT_NODES / GET /nodes) —
    * absent means "no node store configured" and /nodes reports present:false.
    */
   nodesDir?: string;
@@ -57,7 +57,7 @@ export interface ApiConfig {
  * Whether `name` is a safe doc id for the `?doc=` parameter (shared by
  * /doc, /commit and /save-draft): a workspace-relative `*.md` path with no
  * dot/empty segments (so no `..` traversal, no `.hidden`), no backslashes,
- * and not under `archive/` or `threads/` — exactly the `scripts/dl/docs.ts`
+ * and not under `archive/` or `threads/` — exactly the `scripts/lk/docs.ts`
  * discovery rule, so the API accepts precisely what enumeration can list.
  * `turn.xml` is excluded by the `.md` rule.
  */
@@ -89,9 +89,9 @@ function isSafeDocName(name: string): boolean {
  *   GET  /nodes          — the ctx node-store seam: a read-only directory
  *                          tree of cfg.nodesDir (present:false when unset or
  *                          missing) — see src/nodes-fs.ts.
- *   GET  /docloop-skills — the docloop plugin's skill roster, for the
+ *   GET  /lektorat-skills — the lektorat plugin's skill roster, for the
  *                          slash-trigger dropdown (see skills/README.md).
- *   POST /run-skill      — invoke one docloop skill live, synchronously,
+ *   POST /run-skill      — invoke one lektorat skill live, synchronously,
  *                          while the human is still composing (see runSkill).
  *
  * The hand-off to Claude itself is out of band: Claude (hand-simulating the MCP
@@ -101,7 +101,7 @@ function isSafeDocName(name: string): boolean {
  * Returns a connect-style middleware: framework-agnostic so it can be mounted
  * either on Vite's dev-server `configureServer` hook or a plain
  * `http.createServer` (see scripts/server.ts). Everything that used to be
- * derived from `process.cwd()`/`process.env.DOCLOOP_DOC` is now driven by the
+ * derived from `process.cwd()`/`process.env.LEKTORAT_DOC` is now driven by the
  * injected `cfg` instead — the *callers* compute that from cwd/env.
  */
 export function createApi(
@@ -130,8 +130,8 @@ export function createApi(
     );
     if (!hasOwnRepo) {
       await git('init', '-q');
-      await git('config', 'user.email', 'docloop@local');
-      await git('config', 'user.name', 'docloop');
+      await git('config', 'user.email', 'lektorat@local');
+      await git('config', 'user.name', 'lektorat');
     }
   };
 
@@ -144,7 +144,7 @@ export function createApi(
 
   /**
    * Tracked `*.md` doc paths of the workspace repo, recursive, sorted — the
-   * same discovery rule as `scripts/dl/docs.ts` `trackedDocs` (the git call
+   * same discovery rule as `scripts/lk/docs.ts` `trackedDocs` (the git call
    * is replicated rather than imported because this module's plumbing already
    * runs `-C workspace`; the path rule itself IS the imported isDocPath).
    * Never `turn.xml` (not `.md`), never `threads/` or `archive/` or dot-paths.
@@ -326,7 +326,7 @@ export function createApi(
     }
 
     // GET /docs — the workspace's reviewable docs for the left-nav doc tree:
-    // union of tracked *.md (the scripts/dl/docs.ts discovery rule, recursive,
+    // union of tracked *.md (the scripts/lk/docs.ts discovery rule, recursive,
     // path-qualified ids) and working-tree *.md, each with a state:
     //   untracked — in the working tree but never committed;
     //   draft     — tracked, working-tree bytes differ from HEAD (includes
@@ -434,11 +434,11 @@ export function createApi(
       return;
     }
 
-    // GET /docloop-skills — the docloop plugin's own skill roster (name +
+    // GET /lektorat-skills — the lektorat plugin's own skill roster (name +
     // description), for the slash-trigger dropdown in the compose box.
-    // Reads straight off the working tree (docloop/skills/*/SKILL.md), not
+    // Reads straight off the working tree (lektorat/skills/*/SKILL.md), not
     // the installed plugin registry — see runSkill's doc comment.
-    if (pathname === '/docloop-skills') {
+    if (pathname === '/lektorat-skills') {
       if (req.method !== 'GET') return notFound();
       void (async () => {
         try {
@@ -450,7 +450,7 @@ export function createApi(
       return;
     }
 
-    // POST /run-skill — invoke one docloop skill live, synchronously, while
+    // POST /run-skill — invoke one lektorat skill live, synchronously, while
     // the human is still composing (see runSkill). Body: { skill, context }.
     if (pathname === '/run-skill') {
       if (req.method !== 'POST') return notFound();

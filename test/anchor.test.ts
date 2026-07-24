@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { getMarkdown } from '@milkdown/utils';
 import { TextSelection } from '@milkdown/prose/state';
-import { createEditor, type DocloopEditor } from '../src/editor';
+import { createEditor, type LektoratEditor } from '../src/editor';
 import { commentAnchorMark } from '../src/anchor';
 import { findMarkHighlights } from '../src/decorations';
 
@@ -12,13 +12,13 @@ import { findMarkHighlights } from '../src/decorations';
 //      additionally that inner formatting is preserved (the <mark> serializer
 //      dropped it).
 
-let ed: DocloopEditor | null = null;
+let ed: LektoratEditor | null = null;
 afterEach(async () => {
   await ed?.destroy();
   ed = null;
 });
 
-function anchorRange(d: DocloopEditor) {
+function anchorRange(d: LektoratEditor) {
   const hl = findMarkHighlights(d.view.state.doc);
   expect(hl.length).toBe(1);
   return hl[0];

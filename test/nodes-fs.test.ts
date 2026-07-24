@@ -12,7 +12,7 @@ import { readNodeTree, type NodeEntry } from '../src/nodes-fs';
 let root: string;
 
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'docloop-nodes-fs-'));
+  root = await mkdtemp(join(tmpdir(), 'lektorat-nodes-fs-'));
 });
 
 afterEach(async () => {

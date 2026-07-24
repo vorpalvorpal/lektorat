@@ -1,7 +1,7 @@
 /**
  * Gate against remark-directive's "any `:word` is a directive attempt" syntax.
  *
- * `:mark[…]{#id}` (src/anchor.ts) is the only directive docloop's Milkdown
+ * `:mark[…]{#id}` (src/anchor.ts) is the only directive lektorat's Milkdown
  * schema understands. But remark-directive's inline grammar fires on ANY
  * colon immediately followed by a word character, anywhere in running text —
  * "note:check", "type:string", "10:30am" all parse as `textDirective` nodes,

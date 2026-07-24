@@ -24,7 +24,7 @@ describe('canonicalize (LLM→md normalisation step)', () => {
   });
 
   it('normalises non-canonical markdown (the diff-noise the loop needs gone)', async () => {
-    // `*` bullets + a `***` rule are valid markdown but not docloop-canonical
+    // `*` bullets + a `***` rule are valid markdown but not lektorat-canonical
     // (the editor pins `-`). Canonicalising should rewrite them so a later diff
     // against a GUI-saved baseline is clean.
     const messy = '# H\n\n* one\n* two\n\n***\n\nbody';

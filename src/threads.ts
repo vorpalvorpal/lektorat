@@ -50,7 +50,7 @@ function mdastText(node: MdNode): string {
 }
 
 /**
- * Extract the comment anchors from a docloop markdown document, one entry per id
+ * Extract the comment anchors from a lektorat markdown document, one entry per id
  * in document order. Parsed through remark-directive, so `:mark…`/`:::mark…`
  * inside code is ignored. A span broken by inline formatting serialises as
  * several same-id directives (see src/anchor.ts) — their text is coalesced so the

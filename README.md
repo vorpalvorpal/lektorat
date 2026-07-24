@@ -1,4 +1,4 @@
-# docloop — doc↔LLM review GUI
+# lektorat — doc↔LLM review GUI
 
 The human side of the **doc↔LLM collaboration plane** (see issue
 [#53](https://github.com/vorpalvorpal/Doktoreltern/issues/53) and the wiki page

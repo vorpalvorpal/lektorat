@@ -16,7 +16,7 @@ import {
 let base: string;
 
 beforeEach(async () => {
-  base = await mkdtemp(join(tmpdir(), 'docloop-store-'));
+  base = await mkdtemp(join(tmpdir(), 'lektorat-store-'));
 });
 
 afterEach(async () => {

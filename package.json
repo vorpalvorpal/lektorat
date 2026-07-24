@@ -1,5 +1,5 @@
 {
-  "name": "docloop",
+  "name": "lektorat",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,7 @@
     "canonicalize": "vite-node scripts/canonicalize.ts",
     "thread": "vite-node scripts/thread.ts",
     "lint-turn": "vite-node scripts/lint-turn.ts",
-    "dl": "vite-node scripts/dl.ts --",
+    "lk": "vite-node scripts/lk.ts --",
     "test": "vitest run"
   },
   "dependencies": {

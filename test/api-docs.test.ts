@@ -1,5 +1,5 @@
 /**
- * Package E (dl-E-gui-nav-sidebar): multi-doc API + node-store seam.
+ * Package E (lk-E-gui-nav-sidebar): multi-doc API + node-store seam.
  *
  * Correctness criteria 1–10 from the plan, driven over a real ephemeral HTTP
  * server + temp workspace (the api.test.ts idiom). The untouched api.test.ts
@@ -14,7 +14,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createServer, type Server } from 'node:http';
 import { createApi, type ApiConfig } from '../src/api';
-import { canonicalize } from '../scripts/dl/canonical';
+import { canonicalize } from '../scripts/lk/canonical';
 
 const run = promisify(execFile);
 
@@ -36,9 +36,9 @@ async function startServer(cfg: ApiConfig): Promise<void> {
 const git = (...args: string[]) => run('git', ['-C', workspace, ...args]);
 
 beforeEach(async () => {
-  workspace = await mkdtemp(join(tmpdir(), 'docloop-e-workspace-'));
-  skillsDir = await mkdtemp(join(tmpdir(), 'docloop-e-skills-'));
-  nodesDir = await mkdtemp(join(tmpdir(), 'docloop-e-nodes-'));
+  workspace = await mkdtemp(join(tmpdir(), 'lektorat-e-workspace-'));
+  skillsDir = await mkdtemp(join(tmpdir(), 'lektorat-e-skills-'));
+  nodesDir = await mkdtemp(join(tmpdir(), 'lektorat-e-nodes-'));
   await startServer({ workspace, docName: 'doc.md', skillsDir });
 });
 

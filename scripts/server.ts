@@ -1,6 +1,6 @@
 /**
- * Standalone, HMR-free server for actually USING docloop (as opposed to
- * `vite`/`npm run dev`, which is for hacking on docloop's own source). Serves
+ * Standalone, HMR-free server for actually USING lektorat (as opposed to
+ * `vite`/`npm run dev`, which is for hacking on lektorat's own source). Serves
  * the built SPA (`dist/`, from `npm run build`) plus the exact same API
  * handlers as the dev server, on one plain `http.createServer` — no Vite dev
  * server underneath, so it isn't restart-fragile or HMR-reload-happy, and
@@ -12,9 +12,9 @@
  *     npm run serve            # = `vite build && vite-node scripts/server.ts`
  *
  * Env:
- *   DOCLOOP_DOC   — the tracked doc under review (default `doc.md`), same
+ *   LEKTORAT_DOC   — the tracked doc under review (default `doc.md`), same
  *                   knob as the dev server / CLI scripts.
- *   DOCLOOP_NODES — path (absolute or cwd-relative) to a ctx node store for
+ *   LEKTORAT_NODES — path (absolute or cwd-relative) to a ctx node store for
  *                   the left nav's node tree (GET /nodes); unset = no store.
  *   PORT          — default 5173. NEVER point this at the human's live dev
  *                   server port while it's running one of its own.
@@ -25,12 +25,12 @@ import { join, extname, normalize, resolve, sep } from 'node:path';
 import { createApi, type ApiConfig } from '../src/api';
 
 const workspace = join(process.cwd(), 'workspace');
-const docName = process.env.DOCLOOP_DOC ?? 'doc.md';
+const docName = process.env.LEKTORAT_DOC ?? 'doc.md';
 const skillsDir = join(process.cwd(), 'skills');
 // The ctx node store for the left nav's node tree (GET /nodes) — optional;
 // absolute or cwd-relative. Unset = no store, and the GUI hides the section.
-const nodesDir = process.env.DOCLOOP_NODES
-  ? resolve(process.cwd(), process.env.DOCLOOP_NODES)
+const nodesDir = process.env.LEKTORAT_NODES
+  ? resolve(process.cwd(), process.env.LEKTORAT_NODES)
   : undefined;
 const cfg: ApiConfig = { workspace, docName, skillsDir, nodesDir };
 const api = createApi(cfg);
@@ -49,7 +49,7 @@ const API_PATHS = [
   '/docs',
   '/nodes',
   '/threads',
-  '/docloop-skills',
+  '/lektorat-skills',
   '/run-skill',
 ];
 function isApiRequest(pathname: string): boolean {
@@ -100,7 +100,7 @@ const server = createServer((req, res) => {
     if (!(await distExists())) {
       res.statusCode = 404;
       res.setHeader('content-type', 'text/plain; charset=utf-8');
-      res.end("docloop: dist/ not found — run `npm run build` first.");
+      res.end("lektorat: dist/ not found — run `npm run build` first.");
       return;
     }
 
@@ -113,7 +113,7 @@ const server = createServer((req, res) => {
       if (file === null) {
         res.statusCode = 404;
         res.setHeader('content-type', 'text/plain; charset=utf-8');
-        res.end('docloop: not found');
+        res.end('lektorat: not found');
         return;
       }
       res.statusCode = 200;
@@ -130,11 +130,11 @@ const server = createServer((req, res) => {
 });
 
 if (!(await distExists())) {
-  console.error('docloop: dist/ not found — run `npm run build` first.');
+  console.error('lektorat: dist/ not found — run `npm run build` first.');
   process.exit(1);
 }
 
 server.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`[docloop] serving workspace/${docName} + dist/ on http://localhost:${port}`);
+  console.log(`[lektorat] serving workspace/${docName} + dist/ on http://localhost:${port}`);
 });

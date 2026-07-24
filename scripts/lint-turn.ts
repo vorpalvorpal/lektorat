@@ -1,5 +1,5 @@
 /**
- * CLI: structural completeness gate, run from `docloop/` against
+ * CLI: structural completeness gate, run from `lektorat/` against
  * `workspace/doc.md` + `workspace/threads/`:
  *
  *     npm run lint-turn
@@ -12,7 +12,7 @@ import { join } from 'node:path';
 import { lintTurn } from './lint-turn-core';
 
 const workspace = join(process.cwd(), 'workspace');
-const docName = process.env.DOCLOOP_DOC ?? 'doc.md';
+const docName = process.env.LEKTORAT_DOC ?? 'doc.md';
 const issues = await lintTurn({ docPath: join(workspace, docName), threadsDir: join(workspace, 'threads') });
 
 for (const issue of issues) console.log(`${issue.level}: ${issue.message}`);

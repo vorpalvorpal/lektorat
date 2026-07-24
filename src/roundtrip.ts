@@ -54,7 +54,7 @@ export async function roundTrip(markdown: string): Promise<string> {
     })
     // commonmark carries the inline/block raw-HTML handling (html node +
     // remarkHtmlTransformer); gfm adds tables/strikethrough/etc. so the editor
-    // matches what docloop will actually run.
+    // matches what lektorat will actually run.
     .use(commonmark)
     .use(gfm)
     // Same anchor directives as the live editor, so the pre-canonicalise pass

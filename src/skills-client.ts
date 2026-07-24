@@ -1,5 +1,5 @@
 /**
- * Browser ⇄ docloop-skills bridge (see vite.config.ts `GET /docloop-skills`,
+ * Browser ⇄ lektorat-skills bridge (see vite.config.ts `GET /lektorat-skills`,
  * `POST /run-skill`). Mirrors src/skill-frontmatter.ts's `SkillMeta` shape.
  */
 
@@ -8,10 +8,10 @@ export interface SkillMeta {
   description: string;
 }
 
-/** GET /docloop-skills → the docloop plugin's skill roster, for the slash-trigger dropdown. */
+/** GET /lektorat-skills → the lektorat plugin's skill roster, for the slash-trigger dropdown. */
 export async function fetchSkills(): Promise<SkillMeta[]> {
   try {
-    const res = await fetch('/docloop-skills');
+    const res = await fetch('/lektorat-skills');
     const json = (await res.json()) as { ok: boolean; skills?: SkillMeta[] };
     return json.ok && json.skills ? json.skills : [];
   } catch {
@@ -20,7 +20,7 @@ export async function fetchSkills(): Promise<SkillMeta[]> {
 }
 
 /**
- * POST /run-skill → invoke one docloop skill live and return its result text.
+ * POST /run-skill → invoke one lektorat skill live and return its result text.
  * Throws (with the server's error message) on failure — the caller decides
  * how to surface that to the human rather than silently falling back.
  */

@@ -1,17 +1,17 @@
 import { describe, it, expect, afterEach } from 'vitest';
-import { createEditor, type DocloopEditor } from '../src/editor';
+import { createEditor, type LektoratEditor } from '../src/editor';
 import { listChanges, rejectChange } from '../src/changes';
 
 // The change-review model runs on a real headless editor: the live doc is the
 // editor's doc, the baseline is parsed with the same parser.
 
-let ed: DocloopEditor | null = null;
+let ed: LektoratEditor | null = null;
 afterEach(async () => {
   await ed?.destroy();
   ed = null;
 });
 
-async function live(md: string): Promise<DocloopEditor> {
+async function live(md: string): Promise<LektoratEditor> {
   ed = await createEditor(document.createElement('div'), md, { editable: true });
   return ed;
 }

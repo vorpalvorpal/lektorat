@@ -5,40 +5,40 @@ import { createApi, type ApiConfig } from './src/api';
 /**
  * Dev-only endpoints that close the doc↔LLM loop (M3). See `src/api.ts` for
  * the full endpoint documentation (POST /commit, POST /save-draft, GET /doc,
- * /threads, GET /docloop-skills, POST /run-skill) — this plugin is just a
+ * /threads, GET /lektorat-skills, POST /run-skill) — this plugin is just a
  * thin adapter: it computes the config from cwd/env (as it always has) and
  * mounts the framework-agnostic handler on Vite's dev server. The standalone
  * runtime (`scripts/server.ts`, `npm run serve`) mounts the exact same
  * `createApi` handler outside of Vite/HMR.
  */
-function docloopEndpoints(): Plugin {
+function lektoratEndpoints(): Plugin {
   const workspace = join(process.cwd(), 'workspace');
-  // The tracked doc under review. Defaults to `doc.md`; set DOCLOOP_DOC to point
-  // the loop at any markdown file in the workspace (e.g. DOCLOOP_DOC=design.md),
+  // The tracked doc under review. Defaults to `doc.md`; set LEKTORAT_DOC to point
+  // the loop at any markdown file in the workspace (e.g. LEKTORAT_DOC=design.md),
   // so one workspace can host a doc per move. turn.xml + threads/ are shared, so
   // run one active doc per server instance.
-  const docName = process.env.DOCLOOP_DOC ?? 'doc.md';
-  const skillsDir = join(process.cwd(), 'skills'); // the docloop plugin's own skills (see skills/README.md)
+  const docName = process.env.LEKTORAT_DOC ?? 'doc.md';
+  const skillsDir = join(process.cwd(), 'skills'); // the lektorat plugin's own skills (see skills/README.md)
   // The ctx node store for the left nav's node tree (GET /nodes) — optional;
   // absolute or cwd-relative. Unset = no store, and the GUI hides the section.
-  const nodesDir = process.env.DOCLOOP_NODES
-    ? resolve(process.cwd(), process.env.DOCLOOP_NODES)
+  const nodesDir = process.env.LEKTORAT_NODES
+    ? resolve(process.cwd(), process.env.LEKTORAT_NODES)
     : undefined;
   const cfg: ApiConfig = { workspace, docName, skillsDir, nodesDir };
 
   return {
-    name: 'docloop-endpoints',
+    name: 'lektorat-endpoints',
     apply: 'serve', // dev server only — never part of the build or tests
     configureServer(server) {
       // eslint-disable-next-line no-console
-      console.log(`[docloop] serving workspace/${docName}`);
+      console.log(`[lektorat] serving workspace/${docName}`);
       server.middlewares.use(createApi(cfg));
     },
   };
 }
 
 export default defineConfig({
-  plugins: [docloopEndpoints()],
+  plugins: [lektoratEndpoints()],
   // The reviewed doc + sidecar store live under workspace/, which sits inside
   // this Vite root. They are read on demand via the /doc + /threads endpoints,
   // never imported into the module graph — so watching them buys nothing and

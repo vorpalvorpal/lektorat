@@ -230,7 +230,7 @@ export async function addComment(
 
 /**
  * Overwrite an existing comment's body in place, preserving its original
- * `author`/`created` — used to amend a still-in-progress draft (see docloop's
+ * `author`/`created` — used to amend a still-in-progress draft (see lektorat's
  * compose-box lifecycle: a thread's reply box auto-saves on blur, amending
  * the same comment each time, until Save-draft/Commit seals it). Keeping the
  * original `created` matters: amending must not reset "new since baseline"
